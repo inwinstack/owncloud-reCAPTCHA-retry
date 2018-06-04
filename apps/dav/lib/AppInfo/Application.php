@@ -46,6 +46,11 @@ class Application extends App {
 		 * Register capabilities
 		 */
 		$this->getContainer()->registerCapability(Capabilities::class);
+		$container = $this->getContainer();
+		$container->registerService('Config', function($c) {
+            return $c->query('ServerContainer')->getConfig();
+		});
+
 	}
 
 	/**

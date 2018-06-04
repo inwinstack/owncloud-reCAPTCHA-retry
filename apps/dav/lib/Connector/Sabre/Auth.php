@@ -43,6 +43,7 @@ use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
+use OCA\DAV\AppInfo\Application;
 
 class Auth extends AbstractBasic {
 
@@ -202,6 +203,11 @@ class Auth extends AbstractBasic {
 	 * @throws NotAuthenticated
 	 */
 	private function auth(RequestInterface $request, ResponseInterface $response) {
+		if($this->request->isUserAgent([Request::USER_AGENT_OWNCLOUD_DESKTOP])) {
+			if (!$this->ipcheck()){
+				return false;
+			}		
+		}	
 		$forcedLogout = false;
 		if(!$this->request->passesCSRFCheck() &&
 			$this->requiresCSRFCheck()) {
@@ -244,4 +250,44 @@ class Auth extends AbstractBasic {
 		}
 		return $data;
 	}
+
+	private function getClientIP(){
+		if (!empty($_SERVER["HTTP_CLIENT_IP"])){
+			$ip = $_SERVER["HTTP_CLIENT_IP"];
+		}elseif(!empty($_SERVER["HTTP_X_FORWARDED_FOR"])){
+			$ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+		}else{
+			$ip = $_SERVER["REMOTE_ADDR"];
+		}
+		return  $ip;		
+	}
+
+	private function ipCIDRCheck ($IP, $CIDR) {
+		list($net, $mask) = explode('/', $CIDR);
+	
+		if (!isset($mask)) {
+			return $IP === $net;
+		}
+	
+		$ip_net = ip2long($net);
+		$ip_mask = ~((1 << (32 - $mask)) - 1);
+	
+		$ip_ip = ip2long($IP);
+	
+		$ip_ip_net = $ip_ip & $ip_mask;
+	
+		return ($ip_ip_net === $ip_net);
+	}
+
+    private function ipcheck(){
+		$app = new Application();
+		$config_ips = $app->getContainer()->query('Config')->getSystemValue('trusted_desktop_IP');
+		$client_ip = $this->getClientIP();
+		foreach($config_ips as $config_ip){
+			if($this->ipCIDRCheck($client_ip,$config_ip)){
+				return true;
+			}
+		}		
+		return false;
+	}	
 }
