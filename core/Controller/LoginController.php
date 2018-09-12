@@ -41,7 +41,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 
 class LoginController extends Controller {
-	
+
 	/** @var IUserManager */
 	private $userManager;
 
@@ -197,7 +197,6 @@ class LoginController extends Controller {
 		// 	$this->appName, 'login', $parameters, 'guest'
 		// );
 	}
-
 	/**
 	 * @PublicPage
 	 * @UseSession
