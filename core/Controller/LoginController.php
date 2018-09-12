@@ -41,9 +41,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 
 class LoginController extends Controller {
-
-	protected static $loginCount;
-
+	
 	/** @var IUserManager */
 	private $userManager;
 
@@ -224,8 +222,6 @@ class LoginController extends Controller {
 		if ($loginResult !== true) {
 			session_start();
 			$_SESSION['count']++;
-			echo $_SESSION['count'];
-			// die();
 			$this->session->set('loginMessages', [
 				['invalidpassword'], []
 			]);
