@@ -42,6 +42,8 @@ use OCP\IUserManager;
 
 class LoginController extends Controller {
 
+	protected static $loginCount;
+
 	/** @var IUserManager */
 	private $userManager;
 
@@ -220,6 +222,10 @@ class LoginController extends Controller {
 			}
 		}
 		if ($loginResult !== true) {
+			session_start();
+			$_SESSION['count']++;
+			echo $_SESSION['count'];
+			// die();
 			$this->session->set('loginMessages', [
 				['invalidpassword'], []
 			]);
@@ -262,6 +268,7 @@ class LoginController extends Controller {
 			}
 		}
 
+		$_SESSION['count'] = 0;
 		return new RedirectResponse($this->getDefaultUrl());
 	}
 

@@ -58,7 +58,14 @@ script('core', [
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
 			<input type="submit" id="submit" class="login primary icon-confirm" title="<?php p($l->t('Log in')); ?>" value="" disabled="disabled"/>
 		</p>
-		<div class="g-recaptcha" data-callback="notRobot" data-sitekey="6LdxlmcUAAAAAOFoCgzEfzrUV5koMNZrScopzeR5"></div>
+		<?php
+			// echo $_SESSION['count'];
+			if ($_SESSION['count'] >= 2) {
+				echo '<div class="g-recaptcha" data-callback="notRobot" data-sitekey="6LcZYW8UAAAAAGXqa84qM6AuuPfQQJnpP3S9dN3Q" id="robot"></div>';
+			} else {
+				echo '<div class="g-recaptcha" data-callback="notRobot" data-sitekey="6LcZYW8UAAAAAGXqa84qM6AuuPfQQJnpP3S9dN3Q" id="robot" style="display: none;"></div>';
+			}
+		?>
 		<?php if (!empty($_['csrf_error'])) { ?>
 		<p class="warning">
 			<?php p($l->t('You took too long to login, please try again now')); ?>
