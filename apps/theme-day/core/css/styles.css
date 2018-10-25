@@ -1,0 +1,35 @@
+#body-login {
+    text-align: center;
+    background-image: none;
+    background-color: #fff;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+ 
+ #body-login form fieldset {
+    margin-bottom: 0px;
+ }
+
+.grouptop, .groupbottom {
+    border-style: solid;
+    border-color: #c3c3c3;
+} 
+
+.grouptop {
+    border-width: 1px 1px 0px 1px;
+    border-radius: 10px 10px 0px 0px;
+}
+ 
+.groupbottom {
+    border-width: 0px 1px 1px 1px;
+    border-radius: 0px 0px 10px 10px;
+}
+
+button.login-button { 
+    margin-top: 10px;
+    width: 100%;
+    height: 35px;
+    color: #fff;
+    background-color: #0c512d;
+}
